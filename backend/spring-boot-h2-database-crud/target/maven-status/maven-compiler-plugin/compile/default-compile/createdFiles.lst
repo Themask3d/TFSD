@@ -1,0 +1,4 @@
+com\bezkoder\spring\jpa\h2\repository\TutorialRepository.class
+com\bezkoder\spring\jpa\h2\SpringBootJpaH2Application.class
+com\bezkoder\spring\jpa\h2\model\Tutorial.class
+com\bezkoder\spring\jpa\h2\controller\TutorialController.class
