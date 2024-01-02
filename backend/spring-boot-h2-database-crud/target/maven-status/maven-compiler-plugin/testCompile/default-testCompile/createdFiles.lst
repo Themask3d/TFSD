@@ -1,0 +1,3 @@
+com\bezkoder\spring\jpa\h2\controller\TutorialControllerTest.class
+com\bezkoder\spring\jpa\h2\SpringBootJpaH2ApplicationTests.class
+com\bezkoder\spring\jpa\h2\controller\TutorialControllerIntegrationTest.class
