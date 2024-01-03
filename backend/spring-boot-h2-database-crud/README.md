@@ -1,5 +1,3 @@
----
-
 # TFSD Practical work 5-8 Julien Séailles: Backend Part
 
 ## Backend Overview
@@ -29,4 +27,3 @@ API endpoints and their usage are documented in `./backend/Technical documentati
 
 ## Testing
 Contains unit and integration tests to ensure API functionality and reliability.
----
