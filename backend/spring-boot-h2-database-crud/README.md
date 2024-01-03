@@ -23,7 +23,7 @@ The backend of the Task Management Application is developed with Spring Boot and
    ```
 
 ## API Documentation
-API endpoints and their usage are documented in `./backend/Technical documentation/index.html`. [View Documentation](TFSD/backend/Technical documentation/index.html)
+API endpoints and their usage are documented in `./backend/Technical documentation/index.html`. [View Documentation](/backend/Technical documentation/index.html)
 
 ## Testing
 Contains unit and integration tests to ensure API functionality and reliability.
