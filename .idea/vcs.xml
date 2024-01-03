@@ -3,7 +3,6 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/backend" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/backend/spring-boot-h2-database-crud" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/frontend/vue-3-crud" vcs="Git" />
   </component>
 </project>
