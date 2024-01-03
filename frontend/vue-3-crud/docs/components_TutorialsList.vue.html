@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/TutorialsList.vue</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/TutorialsList.vue</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>&lt;template>
+  &lt;div class="list row">
+    &lt;div class="col-md-8">
+      &lt;div class="input-group mb-3">
+        &lt;input type="text" class="form-control" placeholder="Search by title"
+          v-model="title"/>
+        &lt;div class="input-group-append">
+          &lt;button class="btn btn-outline-secondary" type="button"
+            @click="searchTitle"
+          >
+            Search
+          &lt;/button>
+        &lt;/div>
+      &lt;/div>
+    &lt;/div>
+    &lt;div class="col-md-6">
+      &lt;h4>Tutorials List&lt;/h4>
+      &lt;ul class="list-group">
+        &lt;li class="list-group-item"
+          :class="{ active: index == currentIndex }"
+          v-for="(tutorial, index) in tutorials"
+          :key="index"
+          @click="setActiveTutorial(tutorial, index)"
+        >
+          {{ tutorial.title }}
+        &lt;/li>
+      &lt;/ul>
+
+      &lt;button class="m-3 btn btn-sm btn-danger" @click="removeAllTutorials">
+        Remove All
+      &lt;/button>
+    &lt;/div>
+    &lt;div class="col-md-6">
+      &lt;div v-if="currentTutorial">
+        &lt;h4>Tutorial&lt;/h4>
+        &lt;div>
+          &lt;label>&lt;strong>Title:&lt;/strong>&lt;/label> {{ currentTutorial.title }}
+        &lt;/div>
+        &lt;div>
+          &lt;label>&lt;strong>Description:&lt;/strong>&lt;/label> {{ currentTutorial.description }}
+        &lt;/div>
+        &lt;div>
+          &lt;label>&lt;strong>Status:&lt;/strong>&lt;/label> {{ currentTutorial.published ? "Published" : "Pending" }}
+        &lt;/div>
+
+        &lt;router-link :to="'/tutorials/' + currentTutorial.id" class="badge badge-warning">Edit&lt;/router-link>
+      &lt;/div>
+      &lt;div v-else>
+        &lt;br />
+        &lt;p>Please click on a Tutorial...&lt;/p>
+      &lt;/div>
+    &lt;/div>
+  &lt;/div>
+&lt;/template>
+
+&lt;script>
+import TutorialDataService from "../services/TutorialDataService";
+/**
+ * Component for listing all tutorials and managing individual tutorials.
+ * Enables viewing, searching, and deleting tutorials.
+ */
+export default {
+  name: "tutorials-list",
+  data() {
+    return {
+      tutorials: [], // Array to store the list of tutorials.
+      currentTutorial: null, // The currently selected or viewed tutorial.
+      currentIndex: -1, // Index of the currently selected tutorial in the list.
+      title: "" // Title used for searching tutorials.
+    };
+  },
+  methods: {
+    /**
+     * Retrieves all tutorials from the backend service.
+     */
+    retrieveTutorials() {
+      TutorialDataService.getAll()
+        .then(response => {
+          this.tutorials = response.data;
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+    /**
+     * Refreshes the list of tutorials and resets the current tutorial.
+     */
+    refreshList() {
+      this.retrieveTutorials();
+      this.currentTutorial = null;
+      this.currentIndex = -1;
+    },
+
+    /**
+     * Sets the active tutorial based on user selection.
+     * @param {Object} tutorial - The tutorial object to set as current.
+     * @param {number} index - The index of the tutorial in the list.
+     */
+
+    setActiveTutorial(tutorial, index) {
+      this.currentTutorial = tutorial;
+      this.currentIndex = tutorial ? index : -1;
+    },
+
+    /**
+     * Removes all tutorials from the list.
+     */
+
+    removeAllTutorials() {
+      TutorialDataService.deleteAll()
+        .then(response => {
+          console.log(response.data);
+          this.refreshList();
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+
+    /**
+     * Searches for tutorials by title.
+     */
+    searchTitle() {
+      TutorialDataService.findByTitle(this.title)
+        .then(response => {
+          this.tutorials = response.data;
+          this.setActiveTutorial(null);
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    }
+  },
+  mounted() {
+    this.retrieveTutorials();
+  }
+};
+&lt;/script>
+
+&lt;style>
+.list {
+  text-align: left;
+  max-width: 750px;
+  margin: auto;
+}
+&lt;/style>
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-AddTutorial.html">AddTutorial</a></li><li><a href="module-App.html">App</a></li><li><a href="module-Tutorial.html">Tutorial</a></li><li><a href="module-TutorialsList.html">TutorialsList</a></li></ul><h3>Classes</h3><ul><li><a href="TutorialDataService.html">TutorialDataService</a></li></ul><h3>Global</h3><ul><li><a href="global.html#router">router</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed Jan 03 2024 14:36:14 GMT+0100 (Central European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

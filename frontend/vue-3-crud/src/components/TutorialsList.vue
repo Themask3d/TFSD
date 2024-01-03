@@ -55,18 +55,24 @@
 
 <script>
 import TutorialDataService from "../services/TutorialDataService";
-
+/**
+ * Component for listing all tutorials and managing individual tutorials.
+ * Enables viewing, searching, and deleting tutorials.
+ */
 export default {
   name: "tutorials-list",
   data() {
     return {
-      tutorials: [],
-      currentTutorial: null,
-      currentIndex: -1,
-      title: ""
+      tutorials: [], // Array to store the list of tutorials.
+      currentTutorial: null, // The currently selected or viewed tutorial.
+      currentIndex: -1, // Index of the currently selected tutorial in the list.
+      title: "" // Title used for searching tutorials.
     };
   },
   methods: {
+    /**
+     * Retrieves all tutorials from the backend service.
+     */
     retrieveTutorials() {
       TutorialDataService.getAll()
         .then(response => {
@@ -77,17 +83,29 @@ export default {
           console.log(e);
         });
     },
-
+    /**
+     * Refreshes the list of tutorials and resets the current tutorial.
+     */
     refreshList() {
       this.retrieveTutorials();
       this.currentTutorial = null;
       this.currentIndex = -1;
     },
 
+    /**
+     * Sets the active tutorial based on user selection.
+     * @param {Object} tutorial - The tutorial object to set as current.
+     * @param {number} index - The index of the tutorial in the list.
+     */
+
     setActiveTutorial(tutorial, index) {
       this.currentTutorial = tutorial;
       this.currentIndex = tutorial ? index : -1;
     },
+
+    /**
+     * Removes all tutorials from the list.
+     */
 
     removeAllTutorials() {
       TutorialDataService.deleteAll()
@@ -99,7 +117,10 @@ export default {
           console.log(e);
         });
     },
-    
+
+    /**
+     * Searches for tutorials by title.
+     */
     searchTitle() {
       TutorialDataService.findByTitle(this.title)
         .then(response => {

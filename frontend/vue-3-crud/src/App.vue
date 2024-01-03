@@ -19,6 +19,9 @@
 </template>
 
 <script>
+/**
+ * Root component of the application.
+ */
 export default {
   name: "app"
 };

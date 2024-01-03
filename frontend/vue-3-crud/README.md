@@ -1,75 +1,40 @@
-# Vue 3 example with Axios & Vue Router: Build CRUD App
-Build a Vue.js 3 CRUD example to consume REST APIs, display and modify data using Axios and Vue Router.
-- Each Tutorial has id, title, description, published status.
-- We can create, retrieve, update, delete Tutorials.
-- There is a Search bar for finding Tutorials by title.
+---
 
-![vue-3-crud-example-axios-tutorial](vue-3-crud-example-axios-tutorial.png)
+# TFSD Practical work 5-8 Julien Séailles: Frontend Part
 
-For instruction, please visit:
-> [Vue 3 CRUD example with Axios & Vue Router](https://bezkoder.com/vue-3-crud/)
+## Frontend Overview
+Developed using Vue 3, the frontend of the Task Management Application provides a dynamic interface for task management. It's responsive and user-friendly, designed with Bootstrap, and enables CRUD operations on tasks through interaction with the Spring Boot backend.
 
-Typescript version:
-> [Vue 3 Typescript example with Axios: Build CRUD App](https://bezkoder.com/vue-3-typescript-axios/)
+## Key Features
+- **Task Management**: Create, update, delete tasks.
+- **Responsive UI**: Bootstrap-based design.
+- **Search Functionality**: Search tasks by titles.
+- **Real-time Data Interaction**: Axios for API communication.
 
-More Practice:
-> [Vue 2 CRUD App with Vue Router & Axios](https://bezkoder.com/vue-js-crud-app/)
+## Project Structure
+- **Components**:
+    - `AddTutorial.vue`: Form for new tasks.
+    - `Tutorial.vue`: Details of specific tasks.
+    - `TutorialsList.vue`: List and management of tasks.
+- **Services**:
+    - `TutorialDataService.js`: API calls for task operations.
+- **Routing**:
+    - `Router.js`: Navigation routes.
 
-> [Vue Pagination with Axios and API example](https://bezkoder.com/vue-pagination-axios/)
+## Installation and Setup
+1. **Clone the Repository**
+2. **Navigate to Frontend Directory**: `cd ./frontend/vue-3-crud`
+3. **Install Dependencies**: `npm install`
+4. **Run the Application**: `npm run serve`
 
-> [Vue.js JWT Authentication with Vuex and Vue Router](https://bezkoder.com/jwt-vue-vuex-authentication/)
+## Technical Documentation
+Detailed documentation is available at `./frontend/vue-3-crud/docs/index.html`. Open this file in a web browser to access the documentation. [View Documentation](./docs/index.html)
 
-> [Vue File Upload example using Axios](https://bezkoder.com/vue-axios-file-upload/)
+## Usage
+Manage and track tasks via the Vue.js application in the browser.
 
-Fullstack with Node.js Express:
-> [Vue.js + Node.js Express + MySQL](https://bezkoder.com/vue-js-node-js-express-mysql-crud-example/)
+## Contributing
+Standard Git workflows for contributions are welcomed.
 
-> [Vue.js + Node.js Express + PostgreSQL](https://bezkoder.com/vue-node-express-postgresql/)
 
-> [Vue.js + Node.js Express + MongoDB](https://bezkoder.com/vue-node-express-mongodb-mevn-crud/)
-
-Fullstack with Spring Boot:
-> [Vue.js + Spring Boot](https://bezkoder.com/spring-boot-vue-js-crud-example/)
-
-> [Vue.js + Spring Boot + MongoDB](https://bezkoder.com/spring-boot-vue-mongodb/)
-
-Fullstack with Django:
-> [Vue.js + Django](https://bezkoder.com/django-vue-js-rest-framework/)
-
-Integration (run back-end & front-end on same server/port)
-> [Integrate Vue.js with Spring Boot](https://bezkoder.com/integrate-vue-spring-boot/)
-
-> [Integrate Vue App with Node.js Express](https://bezkoder.com/serve-vue-app-express/)
-
-Serverless with Firebase:
-> [Vue Firebase Realtime Database: CRUD example](https://bezkoder.com/vue-firebase-realtime-database/)
-
-> [Vue Firestore CRUD example](https://bezkoder.com/vue-firestore-crud/)
-
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+---

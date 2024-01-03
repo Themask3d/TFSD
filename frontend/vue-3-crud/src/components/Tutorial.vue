@@ -56,15 +56,24 @@
 <script>
 import TutorialDataService from "../services/TutorialDataService";
 
+/**
+ * Component for displaying and editing a specific tutorial.
+ * Allows viewing and editing details of a selected tutorial.
+ */
 export default {
   name: "tutorial",
   data() {
     return {
-      currentTutorial: null,
-      message: ''
+      currentTutorial: null, // The currently selected tutorial object.
+      message: '' // Message to display any status or error information.
+
     };
   },
   methods: {
+    /**
+     * Fetches a tutorial by its ID and sets it as the current tutorial.
+     * @param {number} id - The ID of the tutorial to fetch.
+     */
     getTutorial(id) {
       TutorialDataService.get(id)
         .then(response => {
@@ -76,6 +85,10 @@ export default {
         });
     },
 
+    /**
+     * Updates the published status of the current tutorial.
+     * @param {boolean} status - The new published status to set.
+     */
     updatePublished(status) {
       var data = {
         id: this.currentTutorial.id,
@@ -95,6 +108,10 @@ export default {
         });
     },
 
+    /**
+     * Updates the current tutorial details.
+     * Sends the current tutorial data to the backend for update.
+     */
     updateTutorial() {
       TutorialDataService.update(this.currentTutorial.id, this.currentTutorial)
         .then(response => {
@@ -106,6 +123,10 @@ export default {
         });
     },
 
+    /**
+     * Deletes the current tutorial.
+     * Upon successful deletion, redirects to the tutorials list.
+     */
     deleteTutorial() {
       TutorialDataService.delete(this.currentTutorial.id)
         .then(response => {

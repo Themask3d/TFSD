@@ -36,21 +36,34 @@
 
 <script>
 import TutorialDataService from "../services/TutorialDataService";
-
+/**
+ * Component for adding a new tutorial.
+ * Provides form inputs for title and description, and a submit button to save the tutorial.
+ */
 export default {
   name: "add-tutorial",
   data() {
+    /**
+     * Data function that holds the state of the component.
+     * @returns {Object} The state data of the component.
+     */
     return {
+     // The tutorial object with properties for binding to form inputs.
+
       tutorial: {
         id: null,
         title: "",
         description: "",
         published: false
       },
-      submitted: false
+      submitted: false      // Flag to track if the form is submitted.
     };
   },
   methods: {
+    /**
+     * Saves the tutorial to the database.
+     * Sends a POST request to the backend with the tutorial data.
+     */
     saveTutorial() {
       var data = {
         title: this.tutorial.title,
@@ -67,7 +80,10 @@ export default {
           console.log(e);
         });
     },
-    
+
+    /**
+     * Resets the form to allow entering a new tutorial.
+     */
     newTutorial() {
       this.submitted = false;
       this.tutorial = {};

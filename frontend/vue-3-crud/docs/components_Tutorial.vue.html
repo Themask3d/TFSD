@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/Tutorial.vue</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/Tutorial.vue</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>&lt;template>
+  &lt;div v-if="currentTutorial" class="edit-form">
+    &lt;h4>Tutorial&lt;/h4>
+    &lt;form>
+      &lt;div class="form-group">
+        &lt;label for="title">Title&lt;/label>
+        &lt;input type="text" class="form-control" id="title"
+          v-model="currentTutorial.title"
+        />
+      &lt;/div>
+      &lt;div class="form-group">
+        &lt;label for="description">Description&lt;/label>
+        &lt;input type="text" class="form-control" id="description"
+          v-model="currentTutorial.description"
+        />
+      &lt;/div>
+
+      &lt;div class="form-group">
+        &lt;label>&lt;strong>Status:&lt;/strong>&lt;/label>
+        {{ currentTutorial.published ? "Published" : "Pending" }}
+      &lt;/div>
+    &lt;/form>
+
+    &lt;button class="badge badge-primary mr-2"
+      v-if="currentTutorial.published"
+      @click="updatePublished(false)"
+    >
+      UnPublish
+    &lt;/button>
+    &lt;button v-else class="badge badge-primary mr-2"
+      @click="updatePublished(true)"
+    >
+      Publish
+    &lt;/button>
+
+    &lt;button class="badge badge-danger mr-2"
+      @click="deleteTutorial"
+    >
+      Delete
+    &lt;/button>
+
+    &lt;button type="submit" class="badge badge-success"
+      @click="updateTutorial"
+    >
+      Update
+    &lt;/button>
+    &lt;p>{{ message }}&lt;/p>
+  &lt;/div>
+
+  &lt;div v-else>
+    &lt;br />
+    &lt;p>Please click on a Tutorial...&lt;/p>
+  &lt;/div>
+&lt;/template>
+
+&lt;script>
+import TutorialDataService from "../services/TutorialDataService";
+
+/**
+ * Component for displaying and editing a specific tutorial.
+ * Allows viewing and editing details of a selected tutorial.
+ */
+export default {
+  name: "tutorial",
+  data() {
+    return {
+      currentTutorial: null, // The currently selected tutorial object.
+      message: '' // Message to display any status or error information.
+
+    };
+  },
+  methods: {
+    /**
+     * Fetches a tutorial by its ID and sets it as the current tutorial.
+     * @param {number} id - The ID of the tutorial to fetch.
+     */
+    getTutorial(id) {
+      TutorialDataService.get(id)
+        .then(response => {
+          this.currentTutorial = response.data;
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+
+    /**
+     * Updates the published status of the current tutorial.
+     * @param {boolean} status - The new published status to set.
+     */
+    updatePublished(status) {
+      var data = {
+        id: this.currentTutorial.id,
+        title: this.currentTutorial.title,
+        description: this.currentTutorial.description,
+        published: status
+      };
+
+      TutorialDataService.update(this.currentTutorial.id, data)
+        .then(response => {
+          console.log(response.data);
+          this.currentTutorial.published = status;
+          this.message = 'The status was updated successfully!';
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+
+    /**
+     * Updates the current tutorial details.
+     * Sends the current tutorial data to the backend for update.
+     */
+    updateTutorial() {
+      TutorialDataService.update(this.currentTutorial.id, this.currentTutorial)
+        .then(response => {
+          console.log(response.data);
+          this.message = 'The tutorial was updated successfully!';
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+
+    /**
+     * Deletes the current tutorial.
+     * Upon successful deletion, redirects to the tutorials list.
+     */
+    deleteTutorial() {
+      TutorialDataService.delete(this.currentTutorial.id)
+        .then(response => {
+          console.log(response.data);
+          this.$router.push({ name: "tutorials" });
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    }
+  },
+  mounted() {
+    this.message = '';
+    this.getTutorial(this.$route.params.id);
+  }
+};
+&lt;/script>
+
+&lt;style>
+.edit-form {
+  max-width: 300px;
+  margin: auto;
+}
+&lt;/style>
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-AddTutorial.html">AddTutorial</a></li><li><a href="module-App.html">App</a></li><li><a href="module-Tutorial.html">Tutorial</a></li><li><a href="module-TutorialsList.html">TutorialsList</a></li></ul><h3>Classes</h3><ul><li><a href="TutorialDataService.html">TutorialDataService</a></li></ul><h3>Global</h3><ul><li><a href="global.html#router">router</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed Jan 03 2024 14:36:14 GMT+0100 (Central European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
