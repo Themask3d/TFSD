@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.bezkoder.spring.jpa.h2"},{"l":"com.bezkoder.spring.jpa.h2.controller"},{"l":"com.bezkoder.spring.jpa.h2.model"},{"l":"com.bezkoder.spring.jpa.h2.repository"}];updateSearchResults();
