@@ -1,0 +1,4 @@
+com.bezkoder.spring.jpa.h2
+com.bezkoder.spring.jpa.h2.controller
+com.bezkoder.spring.jpa.h2.model
+com.bezkoder.spring.jpa.h2.repository
