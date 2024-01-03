@@ -1,5 +1,3 @@
----
-
 # TFSD Practical work 5-8 Julien Séailles: Task Management Full Stack Application
 
 ## Description
@@ -90,5 +88,3 @@ Licensed under the [MIT License](LICENSE.md). See `LICENSE.md` for details.
 ## Contact
 - Julien Séailles - [Themask3d](https://github.com/Themask3d)
 - Project Link: [FULL STACK PROJECT](https://github.com/Themask3d/TFSD)
-
----
