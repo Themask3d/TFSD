@@ -19,7 +19,7 @@ import org.apache.logging.log4j.Logger;
  * Controller for managing tutorials.
  * Provides CRUD operations and filtering options for tutorials.
  */
-@CrossOrigin(origins = "http://localhost:8081")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api")
 public class TutorialController {

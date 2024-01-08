@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+  backend:
+    build:
+      context: ./backend/spring-boot-h2-database-crud
+      dockerfile: Dockerfile
+    ports:
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
+    environment:
+      - SERVER_PORT=${BACKEND_PORT}
+    volumes:
+      - ./backend/spring-boot-h2-database-crud:/app
+
+  frontend:
+    build:
+      context: ./frontend/vue-3-crud
+      dockerfile: Dockerfile
+    ports:
+      - "${FRONTEND_PORT}:${FRONTEND_PORT}"
+    environment:
+      - PORT=${FRONTEND_PORT}
+      - BACKEND=http://backend:${BACKEND_PORT}

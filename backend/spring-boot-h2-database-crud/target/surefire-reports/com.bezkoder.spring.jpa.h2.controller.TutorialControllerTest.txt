@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.bezkoder.spring.jpa.h2.controller.TutorialControllerTest
 -------------------------------------------------------------------------------
-Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.307 s - in com.bezkoder.spring.jpa.h2.controller.TutorialControllerTest
+Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.888 s - in com.bezkoder.spring.jpa.h2.controller.TutorialControllerTest
