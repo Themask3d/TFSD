@@ -68,6 +68,68 @@ npm run serve
 ## Usage
 After setting up both the backend and frontend, the application is ready for creating and managing tasks. For detailed instructions, refer to the `README.md` files in the frontend and backend directories.
 
+## Usage with docker
+
+### Running Elements Separately in Docker
+
+#### Backend (Spring Boot Application)
+
+1. **Navigate to the Backend Directory**:
+   ```
+   cd ./backend/spring-boot-h2-database-crud
+   ```
+
+2. **Build the Docker Image**:
+   ```
+   docker build -t my-spring-boot-app .
+   ```
+
+3. **Run the Docker Container on a Custom Port**:
+   ```
+   docker run -e SERVER_PORT=9090 -p 9090:9090 my-spring-boot-app
+   ```
+
+   This will start your backend application on port 9090.
+
+#### Frontend (Vue.js Application)
+
+1. **Navigate to the Frontend Directory**:
+   ```
+   cd ./frontend/vue-3-crud
+   ```
+
+2. **Build the Docker Image**:
+   ```
+   docker build -t my-vue-app .
+   ```
+
+3. **Run the Docker Container on Port 8081**:
+   ```
+   docker run -p 8081:8081 -e PORT=8081 -e BACKEND=http://localhost:9090 my-vue-app
+   ```
+
+   This starts the frontend and attempts to connect it to the backend on port 9090.
+
+Certainly! Running your backend and frontend services using Docker Compose is a great way to streamline the process and manage both components together. Here’s a detailed explanation of how you can do this with your Docker Compose setup:
+
+### Running Backend and Frontend with Docker Compose
+
+#### Build and Run with Docker Compose
+
+1. **Build the Images**:
+   Navigate to the root directory where your `docker-compose.yml` file is located and run the following command:
+   ```
+   docker-compose build
+   ```
+   This command will build the images for both the backend and frontend services as defined in the Docker Compose file.
+
+2. **Start the Services**:
+   ```
+   docker-compose up
+   ```
+   This command will start the backend and frontend services. The frontend should now be able to communicate with the backend through the specified ports (not the case here after 7 hours of search).
+
+
 ## Contributing
 Contributions are welcome. Please follow these steps:
 1. Fork the repository.
