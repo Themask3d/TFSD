@@ -110,8 +110,6 @@ After setting up both the backend and frontend, the application is ready for cre
 
    This starts the frontend and attempts to connect it to the backend on port 9090.
 
-Certainly! Running your backend and frontend services using Docker Compose is a great way to streamline the process and manage both components together. Here’s a detailed explanation of how you can do this with your Docker Compose setup:
-
 ### Running Backend and Frontend with Docker Compose
 
 #### Build and Run with Docker Compose
