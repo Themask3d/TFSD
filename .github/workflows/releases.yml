@@ -39,7 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-            - name: Generate Backend Documentation
+      - name: Generate Backend Documentation
         run: |
           mvn dependency:resolve
           mvn dependency:build-classpath -Dmdep.outputFile=classpath.txt
