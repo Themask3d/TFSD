@@ -39,9 +39,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Generate Backend Documentation
+            - name: Generate Backend Documentation
         run: |
-          javadoc -d backend/Technical\ documentation -sourcepath backend/spring-boot-h2-database-crud/src/main/java -subpackages com.bezkoder.spring.jpa.h2
+          mvn dependency:resolve
+          mvn dependency:build-classpath -Dmdep.outputFile=classpath.txt
+          CLASSPATH=$(cat classpath.txt)
+          javadoc -d backend/Technical\ documentation -sourcepath backend/spring-boot-h2-database-crud/src/main/java -subpackages com.bezkoder.spring.jpa.h2 -classpath $CLASSPATH
+        working-directory: ./backend/spring-boot-h2-database-crud
+
       - name: Generate Frontend Documentation
         run: |
           npm install -g jsdoc
