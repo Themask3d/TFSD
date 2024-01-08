@@ -52,7 +52,6 @@ jobs:
       # Backend documentation generation
       - name: Generate Backend Documentation
         run: |
-          mkdir -p backend/Technical\ documentation
           javadoc -d backend/Technical\ documentation -sourcepath backend/spring-boot-h2-database-crud/src/main/java -subpackages com.bezkoder.spring.jpa.h2
 
       # Frontend documentation generation
@@ -61,17 +60,26 @@ jobs:
           npm install -g jsdoc
           jsdoc -d frontend/vue-3-crud/docs frontend/vue-3-crud/src
 
-      # Deploy documentation (assuming it's combined in the backend/Technical documentation and frontend/vue-3-crud/docs directories)
+      # Combine documentation
+      - name: Combine Documentation
+        run: |
+          mkdir -p combined-docs/backend
+          mkdir -p combined-docs/frontend
+          cp -r backend/Technical\ documentation/* combined-docs/backend/
+          cp -r frontend/vue-3-crud/docs/* combined-docs/frontend/
+
+      # Deploy combined documentation to GitHub Pages
       - name: Deploy Documentation to GitHub Pages
         if: github.ref == 'refs/heads/master'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs
+          publish_dir: ./combined-docs
           keep_files: true
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
           commit_message: 'Deploy documentation to GitHub Pages'
+
 
 
   create-release:
