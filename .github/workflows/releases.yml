@@ -1,7 +1,11 @@
 name: Continuous Integration and Documentation
 
-on: [push]
-
+on:
+  push:
+    branches:
+      - '*'
+    tags:
+      - '*'
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
@@ -25,19 +29,11 @@ jobs:
         run: mvn test
         working-directory: ./backend/spring-boot-h2-database-crud
 
-  generate-changelog:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Generate Changelog
-        id: changelog
-        uses: mikepenz/release-changelog-builder-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
 
   generate-and-publish-docs:
+    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
@@ -155,16 +151,24 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./DOCS
 
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./DOCS
-
-
+on:
+  push:
+    tags:
+      - '*'
   create-release:
+    needs: build-and-test
+    if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     steps:
+      - generate-changelog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Generate Changelog
+        id: changelog
+        uses: mikepenz/release-changelog-builder-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/checkout@v2
       - name: Create GitHub Release
         id: create_release
