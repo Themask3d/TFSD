@@ -1,16 +1,10 @@
 name: Java CI with Maven
 
-on:
-  push:
-    branches:
-      - main
-    tags:
-      - '*'
+on: [push]
 
 jobs:
-  build-and-release:
+  build:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     
@@ -35,24 +29,14 @@ jobs:
       run: mvn test
       working-directory: ./backend/spring-boot-h2-database-crud
 
-    # Only execute the following steps if this push is for a tag
-    - if: startsWith(github.ref, 'refs/tags/')
-      name: Zip Backend Directory
-      run: zip -r backend.zip ./backend/spring-boot-h2-database-crud/
-      
-    - if: startsWith(github.ref, 'refs/tags/')
-      name: Zip Frontend Directory
-      run: zip -r frontend.zip ./frontend/vue-3-crud/
-      
-    - if: startsWith(github.ref, 'refs/tags/')
-      name: Zip Full-stack Directory
-      run: |
-        zip -r full-stack.zip ./backend/spring-boot-h2-database-crud/ \
-                                ./frontend/vue-3-crud/ \
-                                LICENSE.md README.md docker-compose.yml
-      
-    - if: startsWith(github.ref, 'refs/tags/')
-      name: Create Release
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Create Release
       id: create_release
       uses: actions/create-release@v1
       env:
@@ -62,36 +46,3 @@ jobs:
         release_name: Release ${{ github.ref_name }}
         draft: false
         prerelease: false
-
-    - if: startsWith(github.ref, 'refs/tags/')
-      name: Upload Backend Artifact to Release
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./backend.zip
-        asset_name: backend.zip
-        asset_content_type: application/zip
-
-    - if: startsWith(github.ref, 'refs/tags/')
-      name: Upload Frontend Artifact to Release
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./frontend.zip
-        asset_name: frontend.zip
-        asset_content_type: application/zip
-
-    - if: startsWith(github.ref, 'refs/tags/')
-      name: Upload Full-stack Artifact to Release
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./full-stack.zip
-        asset_name: full-stack.zip
-        asset_content_type: application/zip
