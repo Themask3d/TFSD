@@ -36,8 +36,17 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Check if Release Already Exists
+      id: check_release
+      run: |
+        RELEASE_URL=$(curl -s https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ github.ref_name }} | jq -r .url)
+        if [[ "$RELEASE_URL" != "null" ]]; then
+          echo "Release already exists. Skipping creation."
+          echo "skip_release=true" >> $GITHUB_ENV
+        fi
+
     - name: Create Release
-      id: create_release
+      if: env.skip_release != 'true'
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
