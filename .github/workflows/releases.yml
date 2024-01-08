@@ -29,6 +29,71 @@ jobs:
       run: mvn test
       working-directory: ./backend/spring-boot-h2-database-crud
 
+
+  generate-changelog:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Generate Changelog
+        id: changelog
+        uses: mikepenz/release-changelog-builder-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  deploy-docs:
+    needs: [build, generate-changelog]
+    if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      # Backend documentation generation
+      - name: Generate Backend Documentation
+        run: |
+          mkdir -p backend/Technical\ documentation
+          javadoc -d backend/Technical\ documentation -sourcepath backend/spring-boot-h2-database-crud/src/main/java -subpackages com.bezkoder.spring.jpa.h2
+
+      # Frontend documentation generation
+      - name: Generate Frontend Documentation
+        run: |
+          npm install -g jsdoc
+          jsdoc -d frontend/vue-3-crud/docs frontend/vue-3-crud/src
+
+      # Deploy documentation (assuming it's combined in the backend/Technical documentation and frontend/vue-3-crud/docs directories)
+      - name: Deploy Documentation to GitHub Pages
+        if: github.ref == 'refs/heads/master'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
+          keep_files: true
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+          commit_message: 'Deploy documentation to GitHub Pages'
+
+
+  create-release:
+    needs: [build, generate-changelog, deploy-docs]
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref_name }}
+          release_name: Release ${{ github.ref_name }}
+          body: ${{ steps.changelog.outputs.changelog }}
+          draft: false
+          prerelease: false
+
+  
+
   release:
     needs: build
     runs-on: ubuntu-latest
