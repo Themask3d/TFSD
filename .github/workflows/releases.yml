@@ -41,18 +41,12 @@ jobs:
       - uses: actions/checkout@v2
       - name: Generate Backend Documentation
         run: |
-          # Step 1: Ensure all dependencies are downloaded
-          mvn dependency:resolve
-
-          # Step 2: Build the classpath
+          mvn dependency:go-offline
           mvn dependency:build-classpath -Dmdep.outputFile=classpath.txt
-
-          # Step 3: Read the classpath into a variable
           CLASSPATH=$(cat classpath.txt)
+          javadoc -d ./backend/Technical\ documentation -sourcepath ./backend/spring-boot-h2-database-crud/src/main/java -subpackages com.bezkoder.spring.jpa.h2 -classpath $CLASSPATH
+        working-directory: ${{github.workspace}}
 
-          # Step 4: Run javadoc with the classpath
-          javadoc -d backend/Technical\ documentation -sourcepath backend/spring-boot-h2-database-crud/src/main/java -classpath "$CLASSPATH" -subpackages com.bezkoder.spring.jpa.h2
-        working-directory: ./backend/spring-boot-h2-database-crud
 
 
 
