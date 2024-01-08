@@ -1,0 +1,96 @@
+name: Release Workflow
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    
+    # Add your steps for setting up the environment, like setting up Java or Node.js if needed
+    
+    - name: Run Backend Tests
+      run: mvn test
+      working-directory: ./backend/spring-boot-h2-database-crud
+
+    - name: Zip Backend Directory
+      run: zip -r backend.zip ./backend/spring-boot-h2-database-crud/
+      working-directory: ${{github.workspace}}
+      
+    - name: Zip Frontend Directory
+      run: zip -r frontend.zip ./frontend/vue-3-crud/
+      working-directory: ${{github.workspace}}
+      
+    - name: Zip Full-stack Directory
+      run: |
+        zip -r full-stack.zip ./backend/spring-boot-h2-database-crud/ \
+                                ./frontend/vue-3-crud/ \
+                                LICENSE.md README.md docker-compose.yml
+      working-directory: ${{github.workspace}}
+      
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: zipped-repos
+        path: |
+          backend.zip
+          frontend.zip
+          full-stack.zip
+
+  release:
+    needs: build-test
+    runs-on: ubuntu-latest
+    if: success()
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Download Artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: zipped-repos
+        path: ${{github.workspace}}
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+
+    - name: Upload Backend Artifact to Release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ${{github.workspace}}/backend.zip
+        asset_name: backend.zip
+        asset_content_type: application/zip
+
+    - name: Upload Frontend Artifact to Release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ${{github.workspace}}/frontend.zip
+        asset_name: frontend.zip
+        asset_content_type: application/zip
+
+    - name: Upload Full-stack Artifact to Release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ${{github.workspace}}/full-stack.zip
+        asset_name: full-stack.zip
+        asset_content_type: application/zip
