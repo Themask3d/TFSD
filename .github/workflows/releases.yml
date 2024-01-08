@@ -1,37 +1,41 @@
 name: Java CI with Maven
 
-on: [push]
+on:
+  push:
+    branches:
+      - '**'
+    tags:
+      - 'v*'
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    
-    - name: Set up JDK 17
-      uses: actions/setup-java@v2
-      with:
-        java-version: '17'
-        distribution: 'adopt'
+      - uses: actions/checkout@v2
 
-    - name: Cache Maven packages
-      uses: actions/cache@v2
-      with:
-        path: ~/.m2
-        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-        restore-keys: ${{ runner.os }}-m2
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'adopt'
 
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
-      working-directory: ./backend/spring-boot-h2-database-crud
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
 
-    - name: Run Unit Tests
-      run: mvn test
-      working-directory: ./backend/spring-boot-h2-database-crud
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
+        working-directory: ./backend/spring-boot-h2-database-crud
 
+      - name: Run Unit Tests
+        run: mvn test
+        working-directory: ./backend/spring-boot-h2-database-crud
 
   generate-changelog:
-    needs: build
+    needs: build-and-test
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     steps:
@@ -43,52 +47,37 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   deploy-docs:
-    needs: [build, generate-changelog]
-    if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')
+    needs: build-and-test
+    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-
-      # Backend documentation generation
       - name: Generate Backend Documentation
         run: |
           javadoc -d backend/Technical\ documentation -sourcepath backend/spring-boot-h2-database-crud/src/main/java -subpackages com.bezkoder.spring.jpa.h2
-
-      # Frontend documentation generation
       - name: Generate Frontend Documentation
         run: |
           npm install -g jsdoc
           jsdoc -d frontend/vue-3-crud/docs frontend/vue-3-crud/src
-
-      # Combine documentation
       - name: Combine Documentation
         run: |
           mkdir -p combined-docs/backend
           mkdir -p combined-docs/frontend
           cp -r backend/Technical\ documentation/* combined-docs/backend/
           cp -r frontend/vue-3-crud/docs/* combined-docs/frontend/
-
-      # Deploy combined documentation to GitHub Pages
       - name: Deploy Documentation to GitHub Pages
-        if: github.ref == 'refs/heads/master'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./combined-docs
-          keep_files: true
-          user_name: 'github-actions[bot]'
-          user_email: 'github-actions[bot]@users.noreply.github.com'
-          commit_message: 'Deploy documentation to GitHub Pages'
-
-
 
   create-release:
-    needs: [build, generate-changelog, deploy-docs]
+    needs: [build-and-test, generate-changelog]
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Create Release
+      - name: Create GitHub Release
         id: create_release
         uses: actions/create-release@v1
         env:
@@ -99,32 +88,11 @@ jobs:
           body: ${{ steps.changelog.outputs.changelog }}
           draft: false
           prerelease: false
-
-  
-
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
-    steps:
-    - uses: actions/checkout@v2
-
-    - name: Check if Release Already Exists
-      id: check_release
-      run: |
-        RELEASE_URL=$(curl -s https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ github.ref_name }} | jq -r .url)
-        if [[ "$RELEASE_URL" != "null" ]]; then
-          echo "Release already exists. Skipping creation."
-          echo "skip_release=true" >> $GITHUB_ENV
-        fi
-
-    - name: Create Release
-      if: env.skip_release != 'true'
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.ref_name }}
-        release_name: Release ${{ github.ref_name }}
-        draft: false
-        prerelease: false
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: release-artifacts
+          path: |
+            backend/target/*.jar
+            frontend/dist/*
+            combined-docs/
