@@ -56,7 +56,7 @@ jobs:
           full-stack.zip
 
   release:
-    needs: build-test
+    needs: build
     runs-on: ubuntu-latest
     if: success()
     steps:
