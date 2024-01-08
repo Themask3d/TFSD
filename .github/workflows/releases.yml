@@ -41,6 +41,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Generate Backend Documentation
         run: |
+          cd backend/spring-boot-h2-database-crud
           mvn dependency:go-offline
           mvn dependency:build-classpath -Dmdep.outputFile=classpath.txt
           CLASSPATH=$(cat classpath.txt)
