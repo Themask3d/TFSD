@@ -51,6 +51,7 @@ jobs:
     - name: Generate Backend Documentation
       run: |
         cd ./backend/spring-boot-h2-database-crud
+        chmod +x ./mvnw
         ./mvnw javadoc:javadoc
 
     - name: Install Node.js
