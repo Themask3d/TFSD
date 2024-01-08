@@ -110,8 +110,7 @@ jobs:
                 <li>Provides CRUD operations for task management.</li>
                 <li>Utilizes H2 Database for data persistence.</li>
                 <li>RESTful API for frontend interaction.</li>
-                <li>Explore API details in the <a href="https://github.com/Themask3d/TFSD/tree/main/backend/Technical%20documentation/index.html">Backend API Reference</a>.</li>
-                <li>Or visualize it here in the <a href="./backend/index.html">Backend API Reference</a>.</li>
+                <li>Explore API details in the <a href="./backend/index.html">Backend API Reference</a>.</li>
             </ul>
         
             <h3>Frontend</h3>
@@ -119,7 +118,7 @@ jobs:
                 <li>User-friendly interface for task management.</li>
                 <li>Implements real-time data interaction using Axios.</li>
                 <li>Responsive design with Bootstrap.</li>
-                <li>UI components are detailed <a href="https://github.com/Themask3d/TFSD/tree/main/frontend/vue-3-crud/docs/index.html">here</a>.</li>
+                <li>UI components are detailed <a href="./frontend/index.html">here</a>.</li>
             </ul>
         
             <h2>Technical Documentation</h2>
