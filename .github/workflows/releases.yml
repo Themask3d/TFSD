@@ -41,9 +41,19 @@ jobs:
       - uses: actions/checkout@v2
       - name: Generate Backend Documentation
         run: |
-          mvn clean install -DskipTests # This will compile your code and make sure all dependencies are downloaded
-          mvn javadoc:javadoc # This will generate javadoc using the Maven javadoc plugin, which should automatically handle classpath
+          # Step 1: Ensure all dependencies are downloaded
+          mvn dependency:resolve
+
+          # Step 2: Build the classpath
+          mvn dependency:build-classpath -Dmdep.outputFile=classpath.txt
+
+          # Step 3: Read the classpath into a variable
+          CLASSPATH=$(cat classpath.txt)
+
+          # Step 4: Run javadoc with the classpath
+          javadoc -d backend/Technical\ documentation -sourcepath backend/spring-boot-h2-database-crud/src/main/java -classpath "$CLASSPATH" -subpackages com.bezkoder.spring.jpa.h2
         working-directory: ./backend/spring-boot-h2-database-crud
+
 
 
       - name: Generate Frontend Documentation
