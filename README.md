@@ -10,6 +10,10 @@ All the TP report are available here :
 
 * [TP 8](./TP8.md)
 
+And here is the link to my github repo where you can find all latest version of the work ! I hope that this will meet your requirements ! 
+
+[Github repo](https://github.com/Themask3d/TFSD)
+
 ## Description
 Developed by Julien Séailles, a student at the Mines de Saint Etienne enrolled in a computer science course, this full-stack application serves as a task management tool. Users can create, manage, and track tasks, with features to add descriptions and update the status for progress tracking. The backend is implemented using Spring Boot with an H2 database, offering robust and flexible data management. The frontend is built with Vue 3, providing a dynamic and responsive user interface.
 
