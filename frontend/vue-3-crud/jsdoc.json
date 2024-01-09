@@ -2,10 +2,10 @@
   "plugins": ["node_modules/jsdoc-vuejs"],
   "source": {
     "includePattern": "\\.(vue|js)$",
-    "include": ["src"]  // Path to your source files
+    "include": ["src"] 
   },
   "opts": {
     "recurse": true,
-    "destination": "./docs"  // Output directory for documentation
+    "destination": "./docs" 
   }
 }
