@@ -1,5 +1,15 @@
 # TFSD Practical work 5-8 Julien Séailles: Task Management Full Stack Application
 
+All the TP report are available here :
+
+* [TP 5](./TP5.md)
+
+* [TP 6](./TP6.md)
+
+* [TP 7](./TP7.md)
+
+* [TP 8](./TP8.md)
+
 ## Description
 Developed by Julien Séailles, a student at the Mines de Saint Etienne enrolled in a computer science course, this full-stack application serves as a task management tool. Users can create, manage, and track tasks, with features to add descriptions and update the status for progress tracking. The backend is implemented using Spring Boot with an H2 database, offering robust and flexible data management. The frontend is built with Vue 3, providing a dynamic and responsive user interface.
 
