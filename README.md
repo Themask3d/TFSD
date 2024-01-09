@@ -143,7 +143,7 @@ Open an issue first for major changes.
 - Comments are used to clarify complex logic.
 
 ## License
-Licensed under the [MIT License](LICENSE.md). See `LICENSE.md` for details.
+Licensed under the [MIT License](LICENSE). See `LICENSE` for details.
 
 ## Contact
 - Julien Séailles - [Themask3d](https://github.com/Themask3d)
